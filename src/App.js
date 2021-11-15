@@ -2,8 +2,12 @@ import React, { useState, Fragment } from 'react'
 import AddUserForm from './forms/AddUserForm'
 import EditUserForm from './forms/EditUserForm'
 import UserTable from './tables/UserTable'
+import "./App.css";
 
+
+//I'll make a simple, functional component for App instead of a class.
 const App = () => {
+
 	// Data
 	const usersData = [
 		{ id: 1, name: 'Tania', username: 'floppydiskette' },
@@ -18,6 +22,7 @@ const App = () => {
 	const [ currentUser, setCurrentUser ] = useState(initialFormState)
 	const [ editing, setEditing ] = useState(false)
 
+
 	// CRUD operations
 	const addUser = user => {
 		user.id = users.length + 1
@@ -27,12 +32,14 @@ const App = () => {
 	const deleteUser = id => {
 		setEditing(false)
 
+		//filter creates a new array by removing elements that don't belong.
 		setUsers(users.filter(user => user.id !== id))
 	}
 
 	const updateUser = (id, updatedUser) => {
 		setEditing(false)
-
+        
+		//map creates a new array by transforming every element in an array, individually
 		setUsers(users.map(user => (user.id === id ? updatedUser : user)))
 	}
 
@@ -42,35 +49,41 @@ const App = () => {
 		setCurrentUser({ id: user.id, name: user.name, username: user.username })
 	}
 
+	
+
 	return (
-		<div className="container">
-			<h1>CRUD App with Hooks</h1>
-			<div className="flex-row">
-				<div className="flex-large">
-					{editing ? (
-						<Fragment>
-							<h2>Edit user</h2>
-							<EditUserForm
-								editing={editing}
-								setEditing={setEditing}
-								currentUser={currentUser}
-								updateUser={updateUser}
-							/>
-						</Fragment>
-					) : (
-						<Fragment>
-							<h2>Add user</h2>
-							<AddUserForm addUser={addUser} />
-						</Fragment>
-					)}
-				</div>
-				<div className="flex-large">
-					<h2>View users</h2>
-					<UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
-				</div>
-			</div>
-		</div>
-	)
+		<>
+    <div className="container">
+      <h1>CRUD App with Hooks</h1>
+      
+      <div className="flex-row">
+        <div className="flex-large">
+          {editing ? (
+            <Fragment>
+              <h2>Edit user</h2>
+              <EditUserForm
+                editing={editing}
+                setEditing={setEditing}
+                currentUser={currentUser}
+                updateUser={updateUser}
+              />
+            </Fragment>
+          ) : (
+            <Fragment>
+              <h2>Add user</h2>
+              <AddUserForm addUser={addUser} />
+            </Fragment>
+          )}
+        </div>
+        <div className="flex-large">
+          <h2>View users</h2>
+          <UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
+        </div>
+      </div>
+    </div>
+	
+	</>
+  );
 }
 
 export default App
